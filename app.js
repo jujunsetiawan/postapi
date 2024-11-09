@@ -5,7 +5,7 @@ const logger = require('morgan');
 const cors = require('cors')
 
 const app = express();
-app.use(cors)
+app.use(cors())
 
 const v1 = '/api/v1'
 
