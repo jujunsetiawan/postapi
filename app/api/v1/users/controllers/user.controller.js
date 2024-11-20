@@ -1,5 +1,5 @@
 const { StatusCodes } = require('http-status-codes')
-const { getAllUsers, getOneUsers, createUsers } = require('../services/user.service')
+const { getAllUsers, getOneUsers, createUsers, updateUsers, deleteUsers } = require('../services/user.service')
 
 const index = async(req, res, next) => {
     try {
@@ -27,5 +27,23 @@ const create = async (req, res, next) => {
         next(error)
     }
 }
+
+const update = async(req, res, next) => {
+    try {
+        await updateUsers(req)
+        res.status(StatusCodes.OK).json({ status: 'success', message: 'user berhasil diupdate' })
+    } catch (error) {
+        next(error)
+    }
+}
+
+const destroy = async(req, res, next) => {
+    try {
+        await deleteUsers(req)
+        res.status(StatusCodes.OK).json({ status: 'success', message: 'user berhasil dihapus' })
+    } catch (error) {
+        next(error)
+    }
+}
  
-module.exports = { index, find, create }
+module.exports = { index, find, create, update, destroy }

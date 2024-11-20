@@ -20,7 +20,8 @@ const userSchema = Schema(
             required: true
         },
         bio: {
-            type: String
+            type: String,
+            default: ""
         },
         role: {
             type: String,
@@ -29,23 +30,24 @@ const userSchema = Schema(
         },
         avatar: {
             type: Types.ObjectId,
-            ref: 'Avatar'
+            ref: 'Avatar',
+            default: null
         }
     },
     { timestamps: true }
 )
 
-// userSchema.pre('save', async next => {
-//     const User = this
-//     if(User.isModified('password')) {
-//         User.password = await bcrypt.hash(User.password, 12)
-//     }
-//     next()
-// })
+userSchema.pre('save', async function(next) {
+    const User = this
+    if(User.isModified('password')) {
+        User.password = await bcrypt.hash(User.password, 12)
+    }
+    next()
+})
 
-// userSchema.method.comparePassword = async candidatePassword => {
-//     const isMatch = await bcrypt.compare(candidatePassword, this.password)
-//     return isMatch
-// }
+userSchema.methods.comparePassword = async function(candidatePassword) {
+    const isMatch = await bcrypt.compare(candidatePassword, this.password)
+    return isMatch
+}
 
 module.exports = model('User', userSchema)
