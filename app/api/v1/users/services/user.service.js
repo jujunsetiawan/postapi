@@ -33,6 +33,8 @@ const createUsers = async(req) => {
     if(password !== confirm_password) throw new BadRequestError('password dan confirm password tidak cocok.')
 
     const result = await User.create({ username, email, password })
+    delete result._doc.password
+
     return result
 }
 
